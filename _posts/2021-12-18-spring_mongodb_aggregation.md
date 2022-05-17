@@ -13,6 +13,7 @@ mongoDB도 타 RDB 처럼 document 라는 쿼리문을 작성해서 직접 날�
 한 번 보자
 
 ## Spring 설정
+
 #### build.gradle
 프로젝트에서 mongodb를 사용하기 위한 **dependencies**를 추가해준다. 나는 gradle을 사용해서 추가해주었다.
 ~~~ java
@@ -36,7 +37,7 @@ spring:
 
 
 
-## MongoDB
+## MongoDB 설명
 
 ### Operation
 operation 명령어 앞에는 꼭 `$`를 붙여야 한다. `$`가 붙지않는 경우는 operation의 필드나 설정값 등이다.

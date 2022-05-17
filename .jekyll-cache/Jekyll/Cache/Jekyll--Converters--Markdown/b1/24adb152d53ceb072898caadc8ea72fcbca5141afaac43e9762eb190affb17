@@ -1,4 +1,10 @@
-I"C*<h2 id="spring-설정">Spring 설정</h2>
+I"�+<p>Spring에서 공식적으로 제공하는 mongoDB 라이브러리는 JPA 기반이다.
+mongoDB도 타 RDB 처럼 document 라는 쿼리문을 작성해서 직접 날릴수도 있겠지만 mybatis 처럼 좋은 매퍼를 제공해주지 않는다.
+좋은게 좋은거라고 java로 편하게 쓸 수 있을거란 기대로 시작했는데..ㅎㅎ 쉬운건 없다.
+한 번 보자</p>
+
+<h2 id="spring-설정">Spring 설정</h2>
+
 <h4 id="buildgradle">build.gradle</h4>
 <p>프로젝트에서 mongodb를 사용하기 위한 <strong>dependencies</strong>를 추가해준다. 나는 gradle을 사용해서 추가해주었다.</p>
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dependencies</span><span class="o">{</span>
@@ -18,7 +24,7 @@
       <span class="na">uri</span><span class="pi">:</span> <span class="s">mongodb://localhost:27017/service</span>
 </code></pre></div></div>
 
-<h2 id="mongodb">MongoDB</h2>
+<h2 id="mongodb-설명">MongoDB 설명</h2>
 
 <h3 id="operation">Operation</h3>
 <p>operation 명령어 앞에는 꼭 <code class="language-plaintext highlighter-rouge">$</code>를 붙여야 한다. <code class="language-plaintext highlighter-rouge">$</code>가 붙지않는 경우는 operation의 필드나 설정값 등이다.

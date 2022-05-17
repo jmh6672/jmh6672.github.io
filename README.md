@@ -1,20 +1,15 @@
-# Hydejack Starter Kit
+# Hydejack 테마 블로그
 
-A quicker, cleaner way to get started blogging with [Hydejack](https://hydejack.com/).
+## Hydejack 커스컴
 
-## Quick Start
-### Running locally
-1. Clone repository (git users), or [download] and unzip.
-2. Open terminal, `cd` into root directory (where `_config.yml` is located)
-3. Run `bundle install` [^1]
-4. Run `bundle exec jekyll serve`
-5. Open <http://localhost:4000/hydejack-starter-kit/>
 
-## What's next?
-* Open files and read the comments
-* Read the [docs](https://hydejack.com/docs/)
-* Buy the [PRO version](https://hydejack.com/download/) to get the project and resume layout, newsletter subscription box, custom forms, and more.
+### _data
+#### authors.yml
+블로그의 프로필 정보를 수정할 수 있다.
 
-[^1]: Requires Bundler. Install with `gem install bundler`.
+#### social.yml
+`authors`에서 SNS 정보를 입력할때 prefix 값 등을 수정한다. 
 
-[download]: https://github.com/hydecorp/hydejack-starter-kit/archive/master.zip
+
+### _featured_categories
+사이드바의 메뉴를 생성할 수 있다. md 문서로 메뉴를 생성한다.

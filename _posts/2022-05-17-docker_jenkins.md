@@ -1,7 +1,7 @@
 ---
 layout: post
 date: 2022-05-17 00:00:00
-title: Docker 설치 및 Remote Docker 사용하기
+title: Docker로 jenkins 설치하기
 categories: [linux]
 tags: [docker, linux, jenkins, CI/CD]
 comments: true
@@ -127,12 +127,12 @@ USER jenkins
 ~~~
 docker-compose up -d
 ~~~
-![](/assets/post/img_3.png) 
+![](/assets/post/img_3.png)  
 자, 완료 되었다고 한다. 아까 포트포워딩한 8080 을 브라우저로 열어보겠다.
 
 
 jenkins를 설치하면 Unlock을 해달라고 한다.
-![](/assets/post/img_4.png)
+![](/assets/post/img_4.png)  
 unlock 비밀번호는 jenkins 설치할때 로그에서 알려주는데 스샷을 찍어놓은게 없다..
 뭐 위치는 다 똑같다. `/var/jenkins_home/secrets/initialAdminPassword` 파일을 열어보면 비밀번호가 적혀있다.
 아까 호스트에 바운드한 `/home/jenkins` 위치에도 똑같이 jenkins 파일들이 설치되므로 `/home/jenkins/secrets/initialAdminPassword` 파일이 있다.  
@@ -141,12 +141,12 @@ unlock 비밀번호는 jenkins 설치할때 로그에서 알려주는데 스샷�
 
 ### Git Credential 설정
 CI/CD는 기본적으로 git 저장소를 기반으로 많이 쓰므로 기본설정으로 git 인증 설정을 해놓으면 편하다.
-![](/assets/post/img_5.png)
-![](/assets/post/img_6.png)
-![](/assets/post/img_7.png)
+![](/assets/post/img_5.png)  
+![](/assets/post/img_6.png)  
+![](/assets/post/img_7.png)  
 위와 같이 이동한 후에 `adding some credentials` 을 한다.
 
-![](/assets/post/img_8.png)
+![](/assets/post/img_8.png)  
 **kind** 항목에는 **Username with password** 를 선택하고 
 **Scope** 에는 **Global** 로 한다.
 **Username**  에는 **Git 계정**을 넣어주고
@@ -155,10 +155,10 @@ accessToken발급은 사용하는 git에서 찾아보시길!
 
 이제 git 인증서는 등록 되었고, jenkins item을 생성하면
 Git 저장소 연동 항목에서 credentials를 적용하면 잘 된다.
-![](/assets/post/img_10.png)
+![](/assets/post/img_10.png)  
 
 credentials이 적용되지 않으면 아래와 같이 오류가 발생한다.
-![](/assets/post/img_9.png)
+![](/assets/post/img_9.png)  
 
 
 ## 마무리

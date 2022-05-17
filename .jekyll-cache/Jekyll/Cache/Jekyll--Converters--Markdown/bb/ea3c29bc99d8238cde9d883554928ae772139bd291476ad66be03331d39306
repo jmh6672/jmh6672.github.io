@@ -1,0 +1,11 @@
+I"<h2 id="spring-설정">Spring 설정</h2>
+<h4 id="buildgradle">build.gradle</h4>
+<p>프로젝트에서 mongodb를 사용하기 위한 <strong>dependencies</strong>를 추가해준다. 나는 gradle을 사용해서 추가해주었다.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dependencies</span><span class="o">{</span>
+    <span class="n">implementation</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="o">:</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="err">'</span>
+    <span class="n">implementation</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="o">:</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">web</span><span class="err">'</span>
+    <span class="c1">//for mongoDB</span>
+	<span class="n">implementation</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="o">:</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">data</span><span class="o">-</span><span class="n">mongodb</span><span class="err">'</span>
+<span class="o">}</span>
+</code></pre></div></div>
+:ET

@@ -5,26 +5,27 @@ paginate_path: "page:num"
 exclude: ["README.md"] # files to exclude
 highlighter: rouge
 markdown: kramdown
-disqus: dbyll
+disqus: haram
 google_analytics: dbyll
-title: dbyll
+title: haram
 
 defaults:
   -
     scope:
       path: "" # empty string for all files
     values:
-      title: dbyll
+      imamge: true
+      title: Haram's Note
 
 description: Stylish Jekyll Theme
 author:
-  name: dbyll
-  email: dbyll@ismaildemirbilek.com
-  github: dbtek
-  twitter: dbtek
-  pinterest: asd123
-  linkedin: asd123
-  bio: Your stylish, minimalist theme!
+  profile_image: /assets/mh.jpg
+  profile_size: 150
+  name: Haram
+  email: jmh667722@gmail.com
+  github: https://github.com/jmh6672
+  instagram: https://www.instagram.com/jeongmyunghan
+  bio: 힝구앵구잉잉
   email_md5: 726351295ec82e145928582f595aa3aa
 
 rss_path: feed.xml
@@ -32,7 +33,8 @@ categories_path: categories.html
 tags_path: tags.html
 
 # set it as url of an image
-# sidebar_background_image: https://www.dropbox.com/s/g9h23zrycedxtk5/sky.png?raw=1
+#sidebar_background_image: /assets/mh.jpg
+sidebar_background_color: black
 
 BASE_PATH:
 

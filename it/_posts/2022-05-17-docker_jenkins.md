@@ -2,8 +2,7 @@
 layout: post
 date: 2022-05-17 00:00:00
 title: Docker로 jenkins 설치하기
-categories: [it]
-tags: [it, docker, linux, jenkins, CI/CD]
+tags: [docker, linux, jenkins, CI/CD]
 comments: true
 ---
 

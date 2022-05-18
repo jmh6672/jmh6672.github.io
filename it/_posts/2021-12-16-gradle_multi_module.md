@@ -2,7 +2,6 @@
 layout: post
 date: 2021-12-16 10:50:00
 title: Gradle 멀티모듈 프로젝트
-categories: [it]
 tags: [spring, gradle]
 comments: true
 ---

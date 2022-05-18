@@ -2,7 +2,6 @@
 layout: post
 date: 2022-05-16 10:50:00
 title: Docker 설치 및 Remote Docker 사용하기
-categories: [it]
 tags: [docker, linux]
 comments: true
 ---

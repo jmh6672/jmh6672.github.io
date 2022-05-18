@@ -1,6 +1,8 @@
 # Config
 # ========================================================================================
 
+timezone: Asia/Seoul
+
 favicon: /assets/favicon.ico
 
 # Uncomment and set the URL of your site (with protocol, e.g. `https://`)
@@ -78,7 +80,7 @@ paginate_path:         /:num/
 # Theme
 # ---------------------------------------------------------------------------------------
 
-# theme: jekyll-theme-hydejack
+#theme: jekyll-theme-hydejack
 remote_theme: hydecorp/hydejack@v9
 
 

@@ -2,7 +2,6 @@
 layout: post
 date: 2021-12-18 10:50:00
 title: Spring MongoDB Aggregation
-categories: [it]
 tags: [spring, mongodb, gradle]
 comments: true
 ---

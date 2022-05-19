@@ -80,8 +80,8 @@ paginate_path:         /:num/
 # Theme
 # ---------------------------------------------------------------------------------------
 
-#theme: jekyll-theme-hydejack
 remote_theme: hydecorp/hydejack@v9
+theme: jekyll-theme-hydejack
 
 
 # Customizaton
@@ -160,10 +160,17 @@ defaults:
       seo:
         type:          WebPage
 
+markdown: kramdown
+highlighter: rouge
+
 kramdown:
   math_engine:         mathjax
   math_engine_opts:    {}
   footnote_backlink:   '&#x21a9;&#xfe0e;'
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    default_lang: md
 
 
 # 3rd Party Integrations

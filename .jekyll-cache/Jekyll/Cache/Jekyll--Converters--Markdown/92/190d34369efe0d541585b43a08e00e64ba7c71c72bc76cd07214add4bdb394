@@ -1,41 +1,41 @@
-I"�<p>회사 공용서버의 kubernetes 환경에 이미지를 올릴 공간이 없어서 다른서버에 docker를 설치해서 remote docker 연결 하려고 한다.
+I"<p>회사 공용서버의 kubernetes 환경에 이미지를 올릴 공간이 없어서 다른서버에 docker를 설치해서 remote docker 연결 하려고 한다.
 개인 PC에 하려고 했지만 PC 성능이 좋지 못하다.. 내 윈도우에는 설치하기 싫어! 조만간 윈도우 docker 지원도 중지한다고 하던데, 암튼 쾌적한 환경을 원한다.</p>
 
 <h2 id="docker-설치">Docker 설치</h2>
 <p>먼저 yum을 업데이트하고 패키지를 설치하자</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum -y update
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum -y update
 yum install -y yum-utils
 </code></pre></div></div>
 
 <p>yum 환경에 docker 패키지가 있는 저장소를 등록해준다</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 yum-config-manager --enable docker-ce-nightly
 </code></pre></div></div>
 
 <p>이제 docker 패키지를 설치!</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum -y install docker-ce docker-ce-cli containerd.io
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum -y install docker-ce docker-ce-cli containerd.io
 </code></pre></div></div>
 
 <p>설치가 끝났으면 docker를 실행해보자</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl start docker
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl start docker
 
-# 서버 부팅시 docker 자동실행 등록
+<span class="gh"># 서버 부팅시 docker 자동실행 등록</span>
 systemctl enable docker
 
-# 실행되었는지 확인
+<span class="gh"># 실행되었는지 확인</span>
 systemctl status docker
 </code></pre></div></div>
 
 <h2 id="docker-compose-설치">Docker Compose 설치</h2>
 <p>docker로는 컨테이너를 하나씩 밖에 실행하지 못한다. 실행시 명령어들도 매번 입력하기 힘들것이다.
 그래서 docker-compose 를 사용하면 docker 컨테이너 실행을 편리하게 관리할 수 있다.</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># docker-compose 설치
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># docker-compose 설치</span>
 $ sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
-# docker-compose 실행 권한 부여
+<span class="gh"># docker-compose 실행 권한 부여</span>
 $ sudo chmod +x /usr/local/bin/docker-compose
 
-# 실행 확인
+<span class="gh"># 실행 확인</span>
 $ docker-compose --version
 </code></pre></div></div>
 
@@ -46,16 +46,16 @@ $ docker-compose --version
 그래서 system 데몬으로 docker의 포트를 열어줘야 한다.</p>
 
 <p>service에 등록된 docker의 데몬설정을 바꿔보자</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /lib/systemd/system/docker.service
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /lib/systemd/system/docker.service
 </code></pre></div></div>
 
-<p><code class="language-plaintext highlighter-rouge">docker.service</code> 의 <code class="language-plaintext highlighter-rouge">ExecStart</code> 항목을 수정해준다.
-<code class="language-plaintext highlighter-rouge">-H 0.0.0.0:2375</code> 옵션으로 2375 포트로 데몬을 접근할 수 있게 해준다.</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ExecStart=/usr/bin/dockerd -H fd:// -H 0.0.0.0:2375 --containerd=/run/containerd/containerd.sock
+<p><code class="language-md highlighter-rouge">docker.service</code> 의 <code class="language-md highlighter-rouge">ExecStart</code> 항목을 수정해준다.
+<code class="language-md highlighter-rouge">-H 0.0.0.0:2375</code> 옵션으로 2375 포트로 데몬을 접근할 수 있게 해준다.</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ExecStart=/usr/bin/dockerd -H fd:// -H 0.0.0.0:2375 --containerd=/run/containerd/containerd.sock
 </code></pre></div></div>
 
 <p>이제 설정은 끝났고 데몬을 로드하고 재시작해준다</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl daemon-reload
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl daemon-reload
 systemctl restart docker
 </code></pre></div></div>
 

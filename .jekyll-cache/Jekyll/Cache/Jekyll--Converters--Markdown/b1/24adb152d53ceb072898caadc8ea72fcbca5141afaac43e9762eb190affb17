@@ -1,4 +1,4 @@
-I"�+<p>Spring에서 공식적으로 제공하는 mongoDB 라이브러리는 JPA 기반이다.
+I"�+<p>Spring에서 공식적으로 제공하는 mongoDB 라이브러리는 JPA 기반이다.
 mongoDB도 타 RDB 처럼 document 라는 쿼리문을 작성해서 직접 날릴수도 있겠지만 mybatis 처럼 좋은 매퍼를 제공해주지 않는다.
 좋은게 좋은거라고 java로 편하게 쓸 수 있을거란 기대로 시작했는데..ㅎㅎ 쉬운건 없다.
 한 번 보자</p>
@@ -27,8 +27,8 @@ mongoDB도 타 RDB 처럼 document 라는 쿼리문을 작성해서 직접 날�
 <h2 id="mongodb-설명">MongoDB 설명</h2>
 
 <h3 id="operation">Operation</h3>
-<p>operation 명령어 앞에는 꼭 <code class="language-plaintext highlighter-rouge">$</code>를 붙여야 한다. <code class="language-plaintext highlighter-rouge">$</code>가 붙지않는 경우는 operation의 필드나 설정값 등이다.
-spring 에서는 <code class="language-plaintext highlighter-rouge">AggregationOperation</code> 인터페이스의 구현체를 사용한다. 대부분의 구현체가 static 으로 선언되어 있어서 사용하기 편하다.</p>
+<p>operation 명령어 앞에는 꼭 <code class="language-md highlighter-rouge">$</code>를 붙여야 한다. <code class="language-md highlighter-rouge">$</code>가 붙지않는 경우는 operation의 필드나 설정값 등이다.
+spring 에서는 <code class="language-md highlighter-rouge">AggregationOperation</code> 인터페이스의 구현체를 사용한다. 대부분의 구현체가 static 으로 선언되어 있어서 사용하기 편하다.</p>
 
 <p>match operation을 예시로 들면 아래와 같이 선언할 수 있다.</p>
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">AggregationOperation</span> <span class="n">operation1</span> <span class="o">=</span> <span class="nc">Aggregation</span><span class="o">.</span><span class="na">match</span><span class="o">(</span><span class="nc">Criteria</span><span class="o">.</span><span class="na">where</span><span class="o">(</span><span class="s">"name"</span><span class="o">).</span><span class="na">is</span><span class="o">(</span><span class="s">"test"</span><span class="o">));</span>
@@ -76,7 +76,7 @@ Criteria 클래스를 파라미터로 사용하며 Criteria에서 조회 조건�
 </ul>
 
 <h3 id="aggregation">Aggregation</h3>
-<p>직역하면 <strong>집계</strong> 인데, <code class="language-plaintext highlighter-rouge">operation</code> 이라고 하는 <strong>연산</strong>의 모음이라고 할 수 있다. 이 <code class="language-plaintext highlighter-rouge">operation</code>을 순서대로 수행한 결과를 나타내어 준다. 수행 순서가 있으므로 <code class="language-plaintext highlighter-rouge">pipeline</code> 이라고도 한다.</p>
+<p>직역하면 <strong>집계</strong> 인데, <code class="language-md highlighter-rouge">operation</code> 이라고 하는 <strong>연산</strong>의 모음이라고 할 수 있다. 이 <code class="language-md highlighter-rouge">operation</code>을 순서대로 수행한 결과를 나타내어 준다. 수행 순서가 있으므로 <code class="language-md highlighter-rouge">pipeline</code> 이라고도 한다.</p>
 
 <p>아래와 같이 <strong>MongoTemplate.aggregate</strong>를 실행하여 결과를 받는다.</p>
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// method 정의</span>

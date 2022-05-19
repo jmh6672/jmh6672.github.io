@@ -6,6 +6,9 @@ tags: [docker, linux, jenkins, CI/CD]
 comments: true
 ---
 
+* toc
+{:toc .large-only}
+
  회사 쿠버네티스에는 다른 CI/CD가 있어서 개인적으로 CI/CD를 구성해보려고 한다. CI/CD 도구는 래퍼런스도 많고 널리 쓰이는 jenkins를 선택했다.
 다들 약어로 '씨아이씨디'라고 말하지만 초보개발자를 위해 간단하게 CI/CD에 대해서도 알아보자
 

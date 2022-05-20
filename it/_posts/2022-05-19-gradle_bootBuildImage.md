@@ -1,7 +1,8 @@
 ---
 layout: post
-date: 2021-12-16 10:50:00
-title: Gradle 멀티모듈 프로젝트
+date: 2022-05-19 09:10:00
+title: Gradle-Spring bootBuildImage
+description: 배포방법에 있어서 하나의 참고사항만 되었으면 좋겠다. 
 tags: [spring, gradle]
 comments: true
 ---
@@ -9,104 +10,123 @@ comments: true
 * toc
 {:toc .large-only}
 
-**모놀리식(Monolithic)** 아키텍처로 운영되고 있던 웹사이트가 있었다.
-서비스 관리자 웹이었는데, 기능확장이 필요하게 되었을때 수정도 어렵고, 패치할때 재시작 해야해서 일시적인 서비스 중단이 일어나기도 했다.
- 문제는 서버에 로그 하나만 추가해보려고 재시작해야 하는거... 약간의 기능을 추가 한다고 전체 서비스를 내릴 필요는 없기 때문에 필요한 기능만큼 API 모듈을 만들기로 했다. 이렇게 **MSA(Micro Servie Architecture)**가 시작된다.
  
- 처음엔 쓸때없이 설계에 대한 고민을 많이 했다. 기존의 모놀리식 프로젝트에서 필요한 기능을 분리하고 싶었는데 기존 프로젝트는 생각이상으로 개판이었다. 오직 단일 프로젝트를 위한 구조였기 때문에 시간이 부족한 나는 그냥 전체를 새로 만들기로했다.
- 
-결과는 완전히 망했다. 기존 프로젝트에서 필요한 기능을 복붙해오고 늘어나는 모듈에 똑같은 소스를 붙여넣는 짓거리를 하고 있었다. 모듈 간에 연동 및 통신도 필요해지니까 모듈간 상관관계가 개판이 되어갔다.
+ 프로젝트를 진행 할때면 **CI/CD** 방법론에 대한 고민이 항상 새롭게 찾아온다. 환경에 따라서도 다르겠지만, 이전보다 더 나은 방법은 없을까? 고민하게 되는것 같다.
+오늘은 gradle 에서의 **빌드 및 배포** 방법중 하나를 소개해볼까 한다.  
 
-그래서 이 프로젝트를 통합하기로 했다. 모듈의 상하관계를 나눌 수 있는 멀티모듈 gradle로!
-   
+# Cloud Native Buildpack (CNB)   
 
-### 왜 해야하나?
- 왜 이걸 하는지 모르면 하기 싫지 않은가? 새로운건 항상 귀찮거든...이유도 없는데 왜 해?
- 그래서 왜 멀티모듈이 좋냐고?
- 
- 1. 소스 관리하기가 용이하다.
- - 각 모듈별로 소스관리를 하면 소스가 여기저기 엎어지는 경우는 거의 없을 것이다. 다수가 참여하는 프로젝트의 경우는 소스 복구와 버전업/다운 에서 이런 장점이 더 잘 드러난다.
-    
- 2. 모듈간 관계성 정의
- - 빌드 및 종속성 추가, 모듈간 연관 관계등을 정의하기가 좋다.
- 
- 3. 재사용과 소스 공유
- - 한 번 만들어놓은 기능을 반복해서 새로운 모듈에 만들필요가 없다. 필요한 기능의 모듈을 의존성으로 추가하기만 하면 된다.
-    
- 4. 목적의 세분화와 의존성 최소화
- - 서비스를 운영하다보면 이것도 하고싶고 저것도 하고싶다. 그렇다고 뭔가 시도해보기는 부담이 많을 수 있다. 하지만, 멀티모듈은 추가 개발의 부담을 줄여준다. 모듈의 추가나 수정이 서비스에 미치는 영향도가 적고 오류의 원인 추적도 쉽다. 특정 목적에 맞게 모듈을 세분화 하고 다른 모듈에 대한 의존성을 적게 가져가기 때문이다.
+> [buildpakcs 사이트 참조](https://buildpacks.io/)   
+> 통용되는 개념인지는 모르겠으나 Buildpacks 라는 사이트에서 공식적으로 지원한다고 말해준다.
+
+OCI 호환 스펙으로 컨테이너 이미지를 빠르게 빌드 및 배포해주는 기술이다. 
+docker를 사용해서 `컨테이너 빌드 -> 이미지 빌드 -> 저장소 등록` 과정을 거치려면 준비과정도 필요하고 다소 번거로울 수 있다.
+또한, docker로 빌드 구성을 할 때, docker는 어플리케이션의 속성을 알지 못하므로 필요한 이미지 레이어 설정도 수동으로 해주어야한다.
+
+`CNB`는 이런 과정들을 간략하게 축소하였다. 컨테이너를 생성함과 동시에 이미지를 만들고 저장소에 이미지도 push 해준다. 그리고 사용하는 어플리케이션 특성에 맞게 레이어를 생성하기 때문에
+처음 빌드된 이후로는 빠른 빌드속도를 보여준다.
 
 
-## 프로젝트 구성을 해보자
 
-### 루트 프로젝트 생성
-우선 gradle 프로젝트를 생성한다.   
-![](/assets/post/img.png)   
-위 이미지에 보이는 프로젝트는 멀티모듈의 루트 모듈이 된다.
-위 구조에서 보이는 `gradle/wrapper` , `gradlew` , `settings.gradle` 은 루트 모듈에만 존재하게 될텐데, 이는 모든 모듈에서 똑같은 build 환경을 사용하기 위함이다.
+# bootBuildImage for Spring   
+
+> [Spring 공식 플러그인 문서](https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/)   
+> Springboot 2.3 버전 이상에서만 사용할 수 있다.
+
+springboot를 위해 제공된 `CNB`인 `bootBuildImage`를 사용해보려고 한다.
+bootJar로 생성된 jar파일을 OCI 컨테이너로 포함시켜 이미지로 만들고 개인저장소에도 올라가는지 본다.
 
 
-### 서브모듈 추가
-이제 서브모듈을 추가해본다.   
-![](/assets/post/img_1.png)   
-서브모듈에는 소스파일과 `build.gradle` 만 추가하고 `settings.gradle` 에 서브모듈을 include 한다.
-~~~ java
-rootProject.name = 'multi_module'
-include 'sub_module_A'
-include 'sub_module_B'
-~~~
-여기까지는 모듈 간의 의존성을 부여할 수 있도록 하기 위한 준비과정이다.
+## Gradle
 
-이제 외존성 정보를 공유하도록 해본다. `루트 모듈의 build.gradle` 파일을 수정한다.
-~~~ java
-subprojects {
-    apply plugin: 'java'
+### Plugin
 
-    group 'org.example'
+예시에서는 spring의 2가지 plugin을 사용했다.
 
+- **spring-boot-gradle-plugin** : 사용할 springboot 버전에 따라 포함된 task 를 사용할 수 있게 해주고, spring 종속성에 대해서 명시된 버전으로 강제할 수 있게 해준다. 
+  여기에 bootBuildImage Task가 포함된다.
+- **dependency-management-plugin** : 종속성을 통해 모듈을 가져올때, 명시된 spring 종속성에 맞게 모듈을 구성해준다. 
+  spring 종속성 내부의 jar파일들과 충돌할 수 있거나 사용될 수 없는 모듈에 대한 오류를 방지할 수 있다. 
+
+~~~groovy
+//file: 'build.gradle'
+buildscript {
     repositories {
         mavenCentral()
     }
-
     dependencies {
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.5.3")
+        classpath("io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE")
     }
+}
 
-    test {
-        useJUnitPlatform()
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+~~~
+
+이렇게 플러그인까지 등록하면 IDE를 사용한다면 task 목록에 `bootBuildImage`가 있을것이고
+터미널로 확인하려면 `gradlew tasks`를 해보면 확인할 수 있다.   
+
+
+### bootBuildImage 설정
+
+bootBuildImage task에서 사용할 docker와 최종적으로 이미지를 push할 repository에 대한 설정을 해줄 수 있다.
+
+- **imageName** : 생성될 이미지명을 정한다.
+- **publish** : 이미지빌드가 끝나면 repository에 push를 자동으로 진행할지 여부이다.
+- **publish** : 이미지 빌드에 사용할 docker에 대한 설정이다.
+  - *host* : remote docker를 사용한다면 사용할 docker의 url를 입력한다.
+  - *publishRegistry* : 이미지를 push할 repository에 대한 설정이다.
+    - *username* : repository에 로그인할 ID
+    - *password* : repository ID의 password
+    - *url* : repository URL. 오직 https만 허용이 된다.
+
+~~~groovy
+//file: 'build.gradle'
+buildscript {
+    ext {
+        namespace = "my"
+        docker_host = "tcp://127.0.0.1::2375"
+        docker_registryIp = "127.0.0.1"
+        docker_username = "admin"
+        docker_password = "wlwndgo"
+    }
+}
+
+bootBuildImage {
+    //곧바로 저장소에 push할 것이기 때문에  {저장소 IP}/{네임스페이스}/{프로젝트명}:{태그명} 형식으로 만들었다.
+    imageName = "${docker_registryIp}/${kube_namespace}/${project.name}:${getVersion()}"
+    publish = true
+    docker {
+        host = docker_host
+        publishRegistry {
+            username = docker_username
+            password = docker_password
+            url = "https://${docker_registryIp}/"
+        }
     }
 }
 ~~~
-`subprojects` 는 서브모듈에 공통으로 적용되는 의존성을 지정할 수 있다. 플러그인, 저장소, 공통 그룹, 테스트 환경까지 동일하게 조성가능하다.
 
 
-### 모듈간 의존성 주입
-이제 `sub_module_A`와 `sub_module_B`를 각각 개발한다고 해보자, 서로 고통으로 필요한 로직이 있을 수 있지만 서로 다른 모듈이기 때문에 동일한 로직을 복붙해서 개발하게 되면 나중에 수정도 어렵고 코드를 복붙하면 실수도 있을 수 있다. 그래서 `common_module`을 추가해서 공통로직을 처리하도록 하자.   
-![](/assets/post/img_2.png)   
-위와 같이 모듈을 추가하고 `settings.gradle`에 모듈을 include 하였다.
+### gradle task 실행
 
-`sub_common 모듈의 build.gradle` 에서 컴파일시 jar 파일을 생성하도록 설정한다.
-~~~ java
-jar { enabled = true }
+task 실행은 너무 간단하다.
+~~~
+gradlew bootBuildImage
 ~~~
 
-그리고 `루트 모듈의 build.gradle` 에서 각 서브모듈에 공통모듈을 의존성으로 추가해준다.
-~~~ java
-project(':sub_module_A') {
-    dependencies {
-        implementation project(':sub_common')
-    }
-}
-project(':sub_module_B') {
-    dependencies {
-        implementation project(':sub_common')
-    }
-}
-~~~
-모듈간 의존성 추가는 위와 같이 지정해주며, common 모듈이 필요치 않는 모듈에서는 의존성을 제거하는게 좋다. 다른 케이스로 `sub_module_A`의 로직을 `sub_module_B` 에서 필요할때 위와 같은 방법으로 의존성을 추가해서 사용한다.
+한 번의 설정으로 이렇게 간단하게 이미지를 publish 까지 할 수 있다.
 
-gradle 멀티모듈 구성방법은 여기까지다. 
 
-## 마치며
-내가 작성한 예시는 매우 간단한 예제이지만 실제로 적용할때는 아키텍처의 분리 및 부분 통합이 가능하기 때문에 복잡한 구조로 설계가 가능하다. 개발을 진행하다보면 설계에 대한 의문점이 생길때가 많은데, 멀티 모듈은 설계구조를 바꾸기도 용이한 면이 있어서 능동적인 개발을 하기에도 참 좋은 구조라고 생각이 된다.
+## 단점
+
+`CNB`에서 지원하는 spring boot 이미지화가 완전하지 않은지 이미지빌드된 시간에 오류가 있다.
+나는 아무리해도 42년전에 빌드됬다고 한다..이미지빌드 시간을 정할 수 있는지 모르겠다.
+다행인건, 저장소에 올라간 시간은 정상적으로 나온다.
+
+docker 커맨드 삽입이 안되어서 bootJar만 컨테이너화 된다.
+컨테이너에 포함할 동작이 있으면 따로 Dockerfile로 빌드해야 할 듯 하다.
+
+차차 옵션이 추가될 예정이라는데, 아직은 기능이 부족해보인다.

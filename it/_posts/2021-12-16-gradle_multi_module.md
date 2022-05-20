@@ -50,7 +50,8 @@ comments: true
 이제 서브모듈을 추가해본다.   
 ![](/assets/post/img_1.png)   
 서브모듈에는 소스파일과 `build.gradle` 만 추가하고 `settings.gradle` 에 서브모듈을 include 한다.
-~~~ java
+~~~ groovy
+//file: 'build.gradle'
 rootProject.name = 'multi_module'
 include 'sub_module_A'
 include 'sub_module_B'
@@ -58,7 +59,8 @@ include 'sub_module_B'
 여기까지는 모듈 간의 의존성을 부여할 수 있도록 하기 위한 준비과정이다.
 
 이제 외존성 정보를 공유하도록 해본다. `루트 모듈의 build.gradle` 파일을 수정한다.
-~~~ java
+~~~ groovy
+//file: 'build.gradle'
 subprojects {
     apply plugin: 'java'
 
@@ -87,12 +89,14 @@ subprojects {
 위와 같이 모듈을 추가하고 `settings.gradle`에 모듈을 include 하였다.
 
 `sub_common 모듈의 build.gradle` 에서 컴파일시 jar 파일을 생성하도록 설정한다.
-~~~ java
+~~~ groovy
+//file: 'build.gradle'
 jar { enabled = true }
 ~~~
 
 그리고 `루트 모듈의 build.gradle` 에서 각 서브모듈에 공통모듈을 의존성으로 추가해준다.
-~~~ java
+~~~ groovy
+//file: 'build.gradle'
 project(':sub_module_A') {
     dependencies {
         implementation project(':sub_common')

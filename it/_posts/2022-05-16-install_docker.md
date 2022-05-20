@@ -72,6 +72,7 @@ vi /lib/systemd/system/docker.service
 `docker.service` 의 `ExecStart` 항목을 수정해준다.
 `-H 0.0.0.0:2375` 옵션으로 2375 포트로 데몬을 접근할 수 있게 해준다.
 ~~~
+#file: '/lib/systemd/system/docker.service'
 ExecStart=/usr/bin/dockerd -H fd:// -H 0.0.0.0:2375 --containerd=/run/containerd/containerd.sock
 ~~~
 

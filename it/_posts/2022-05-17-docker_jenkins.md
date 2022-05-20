@@ -30,8 +30,9 @@ docker로 jenkins를 구동할 예정이기 때문에 docker가 기본적으로 
 나는 컨테이너의 볼륨을 설정할 위치에 **docker-compose** 구성을 할 생각이다.
 
 #### docker-compose.yml
-볼륨위치는 `/home/jenkins/` 로 정했다. 해당 위치에 `docker-compose.yml` 을 생성하자
+볼륨위치는 `/home/jenkins/` 로 정했다. 해당 위치에 `docker-compose.yml` 을 생성하자   
 ~~~
+#file: 'docker-compose.yml'
 version: '3.7'
 
 services:
@@ -80,6 +81,7 @@ Dockerfile을 생성하기 앞서, 쉘파일을 하나 만든다.
 컨테이너의 Agent가 docker를 실행할 수 있다.
 
 ~~~
+#file: 'docker_install.sh'
 #!/bin/sh
 
 apt-get update && \
@@ -104,6 +106,7 @@ apt-get -y install docker-ce
 ### Dockerfile
 이제 Dockerfile를 생성해보자. 마찬가지로 `docker-compose.yml`과 같은 위치로 `/home/jenkins/`에 생성한다.
 ~~~
+#file: 'Dockerfile'
 FROM jenkins/jenkins:lts
 
 #root 계정으로 로그인

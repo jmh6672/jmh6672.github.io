@@ -1,7 +1,7 @@
 ---
 layout: post
 date: 2022-05-27 00:00:00
-title: Mac에서 ruby 버전 관리
+title: Spring 프로퍼티 importer
 tags: [Mac, ruby, rbenv, brew ]
 comments: true
 ---

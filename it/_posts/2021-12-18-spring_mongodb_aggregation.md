@@ -18,7 +18,8 @@ mongoDB도 타 RDB 처럼 document 라는 쿼리문을 작성해서 직접 날�
 
 #### build.gradle
 프로젝트에서 mongodb를 사용하기 위한 **dependencies**를 추가해준다. 나는 gradle을 사용해서 추가해주었다.
-~~~ java
+~~~ groovy
+//file: 'build.gradle'
 dependencies{
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -30,7 +31,8 @@ dependencies{
 #### application.yml
 **.properties** 파일도 되지만 나는 **yaml** 파일을 선호한다. 해당 옵션은 아래 예시와 같다.
 프로퍼티값만 써주면 커넥션 관련 **bean**을 따로 작성하거나 할 필요없이 자동 생성된다.
-~~~ yaml
+~~~ yml
+#file: 'application.yml'
 spring:
   data:
     mongodb:

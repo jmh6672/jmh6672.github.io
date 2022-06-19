@@ -16,7 +16,7 @@ comments: true
 
 
 
-# EnvironmentPostProcessor
+## EnvironmentPostProcessor
 
 Spring 환경변수를 주입하는 `EnvironmentPostProcessor` 클래스를 하나 만들어보자.
 
@@ -116,7 +116,7 @@ public class CustomYmlEnvironmentPostProcessor implements EnvironmentPostProcess
 
 
 
-# spring.factories
+## spring.factories
 
 spring boot 는 Auto-configuration 수행을 위해서 boot가 실행될 때 클래스패스에 있는 `spring.factories` 파일을 찾아서 `spring.factories` 파일 내의 bean 생성 클래스를 실행한다.
 
